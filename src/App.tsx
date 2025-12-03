@@ -16,7 +16,8 @@ function App() {
   const handleVerify = async (email: string, dob: string, last4: string) => {
     setIsVerifying(true);
     try {
-      const response = await fetch('http://localhost:3001/api/auth/verify', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/auth/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

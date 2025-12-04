@@ -4,56 +4,52 @@ on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build project
-        run: npm run build
-        env:
-          VITE_API_URL: https://Bankaichat.codecafelab.in
-      
-      - name: Deploy to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT || 22 }}
-          source: "."
-          target: "/var/www/supercx_frontend"
-          exclude: |
-            .git
-            .github
-            node_modules
-            .next
-            dist
-      
-      - name: Install dependencies on server
+      - name: Deploy SuperCX Frontend to Server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT || 22 }}
+          host: 168.231.112.124
+          username: root
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
           script: |
-            cd /var/www/supercx_frontend
-            npm ci --production=false
+            set -e
+            echo "🚀 Starting Deployment: SuperCX Frontend"
+
+            APP_DIR="/var/www/supercx_frontend"
+            if [ ! -d "$APP_DIR" ]; then
+              echo "📌 Folder missing — cloning..."
+              git clone https://github.com/CodeCafeLab/supercx_frontend.git "$APP_DIR"
+            fi
+
+            cd "$APP_DIR"
+
+            echo "📥 Fetching latest code"
+            git fetch origin main --tags
+            git reset --hard origin/main
+            git clean -fd
+
+            echo "📦 Installing dependencies"
+            npm install --legacy-peer-deps
+
+            echo "🌍 Setting environment variable"
+            export VITE_API_URL="https://Bankaichat.codecafelab.in"
+
+            echo "🏗️ Building frontend"
             npm run build
-            pm2 restart supercx-frontend
+
+            echo "🔁 Restarting PM2 app"
+            if pm2 describe supercx-frontend >/dev/null 2>&1; then
+              pm2 restart supercx-frontend
+            else
+              pm2 serve dist 3006 --name supercx-frontend --spa
+            fi
+
+            pm2 save
+            echo "🎯 SuperCX Frontend Deployed Successfully!"

@@ -10,12 +10,12 @@ interface Message {
 }
 
 interface ChatWidgetProps {
-  userId: string;
+  customerId: string;
 }
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
-export default function ChatWidget({ userId }: ChatWidgetProps) {
+export default function ChatWidget({ customerId }: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function ChatWidget({ userId }: ChatWidgetProps) {
         },
         {
           headers: {
-            'X-User-Id': userId,
+            'X-Customer-Id': customerId,
           },
         }
       );

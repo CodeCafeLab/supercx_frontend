@@ -3,13 +3,13 @@ import ChatWidget from './components/ChatWidget';
 import './App.css';
 
 function App() {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [customerId, setCustomerId] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setUserId(storedUserId);
+    const storedCustomerId = localStorage.getItem('customerId');
+    if (storedCustomerId) {
+      setCustomerId(storedCustomerId);
     }
   }, []);
 
@@ -27,10 +27,12 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
-        setUserId(data.userId);
-        localStorage.setItem('userId', data.userId);
+        setCustomerId(data.customerId);
+        localStorage.setItem('customerId', data.customerId);
       } else {
-        alert('Verification failed. Please check your credentials.');
+        const errorData = await response.json().catch(() => ({ error: 'Verification failed' }));
+        console.error('Verification failed:', errorData);
+        alert(errorData.error || 'Verification failed. Please check your credentials.');
       }
     } catch (error) {
       console.error('Verification error:', error);
@@ -40,7 +42,7 @@ function App() {
     }
   };
 
-  if (!userId) {
+  if (!customerId) {
     return (
       <div className="app-container">
         <div className="verification-form">
@@ -54,7 +56,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <ChatWidget userId={userId} />
+      <ChatWidget customerId={customerId} />
     </div>
   );
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinetiQ Chat Embed Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .example-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #4a90e2;
+            margin-top: 0;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>KinetiQ Chat Widget - Embedding Guide</h1>
+    
+    <div class="example-section">
+        <h2>Method 1: Iframe Embed (Recommended)</h2>
+        <p>Embed the chat widget using an iframe:</p>
+        <pre><code>&lt;iframe 
+    src="http://localhost:3012?embedded=true" 
+    width="380" 
+    height="600" 
+    frameborder="0"
+    style="position: fixed; bottom: 20px; right: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"
+&gt;&lt;/iframe&gt;</code></pre>
+    </div>
+
+    <div class="example-section">
+        <h2>Method 2: Script Tag Embed</h2>
+        <p>Add this script tag to your HTML page:</p>
+        <pre><code>&lt;script&gt;
+  window.kinetiqChatConfig = {
+    apiUrl: 'http://localhost:3001',
+    embedded: true
+  };
+&lt;/script&gt;
+&lt;script src="http://localhost:3012/kinetiq-chat.js"&gt;&lt;/script&gt;</code></pre>
+        <p>Make sure your React app is built and served with the embedded mode enabled.</p>
+    </div>
+
+    <div class="example-section">
+        <h2>Method 3: Direct React Component (For React Apps)</h2>
+        <p>If you're using React, you can import the component directly:</p>
+        <pre><code>import FloatingChatWidget from '@kinetiq/chat-widget';
+
+function App() {
+  return (
+    &lt;&gt;
+      &lt;YourApp /&gt;
+      &lt;FloatingChatWidget 
+        apiUrl="http://localhost:3001"
+        sessionId={sessionId}
+      /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+    </div>
+
+    <div class="example-section">
+        <h2>Configuration Options</h2>
+        <p>You can configure the widget using <code>window.kinetiqChatConfig</code>:</p>
+        <pre><code>window.kinetiqChatConfig = {
+  apiUrl: 'http://localhost:3001',  // Backend API URL
+  embedded: true,                     // Enable embedded mode
+  position: 'bottom-right',            // Widget position
+  theme: 'default'                    // Theme (future feature)
+};</code></pre>
+    </div>
+
+    <div class="example-section">
+        <h2>Live Example</h2>
+        <p>Here's a live example embedded below:</p>
+        <iframe 
+            src="http://localhost:3012?embedded=true" 
+            width="380" 
+            height="600" 
+            frameborder="0"
+            style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); margin: 20px 0;"
+        ></iframe>
+    </div>
+</body>
+</html>
+

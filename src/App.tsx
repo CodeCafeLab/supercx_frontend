@@ -1,125 +1,55 @@
 import { useState, useEffect } from 'react';
 import ChatWidget from './components/ChatWidget';
+import FloatingChatWidget from './components/FloatingChatWidget';
 import './App.css';
 
 function App() {
-  const [customerId, setCustomerId] = useState<string | null>(null);
-  const [isVerifying, setIsVerifying] = useState(false);
+  // Check if we're in embedded mode (via script tag or URL parameter)
+  const isEmbedded = window.location.search.includes('embedded=true') || 
+                     (window as any).kinetiqChatConfig?.embedded;
 
-  useEffect(() => {
-    const storedCustomerId = localStorage.getItem('customerId');
-    if (storedCustomerId) {
-      setCustomerId(storedCustomerId);
+  // Get API URL from URL params or config (for embedded mode)
+  const urlParams = new URLSearchParams(window.location.search);
+  const apiUrlFromParam = urlParams.get('apiUrl');
+  if (apiUrlFromParam && isEmbedded) {
+    // Set API URL in environment for embedded mode
+    if (!import.meta.env.VITE_API_URL) {
+      (window as any).__KINETIQ_API_URL__ = apiUrlFromParam;
     }
-  }, []);
-
-  const handleVerify = async (email: string, dob: string, last4: string) => {
-    setIsVerifying(true);
-    try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${API_URL}/api/auth/verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, dob, last4 }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setCustomerId(data.customerId);
-        localStorage.setItem('customerId', data.customerId);
-      } else {
-        const errorData = await response.json().catch(() => ({ error: 'Verification failed' }));
-        console.error('Verification failed:', errorData);
-        alert(errorData.error || 'Verification failed. Please check your credentials.');
-      }
-    } catch (error) {
-      console.error('Verification error:', error);
-      alert('Failed to verify. Please try again.');
-    } finally {
-      setIsVerifying(false);
-    }
-  };
-
-  if (!customerId) {
-    return (
-      <div className="app-container">
-        <div className="verification-form">
-          <h1>SuperCX Banking Chat</h1>
-          <p>Please verify your identity to continue</p>
-          <VerificationForm onVerify={handleVerify} isVerifying={isVerifying} />
-        </div>
-      </div>
-    );
   }
 
-  return (
-    <div className="app-container">
-      <ChatWidget customerId={customerId} />
-    </div>
-  );
-}
+  // Generate or retrieve session ID
+  const [sessionId, setSessionId] = useState<string>(() => {
+    const stored = localStorage.getItem('kinetiq_session_id');
+    if (stored) return stored;
+    const newId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('kinetiq_session_id', newId);
+    return newId;
+  });
 
-function VerificationForm({
-  onVerify,
-  isVerifying,
-}: {
-  onVerify: (email: string, dob: string, last4: string) => void;
-  isVerifying: boolean;
-}) {
-  const [email, setEmail] = useState('');
-  const [dob, setDob] = useState('');
-  const [last4, setLast4] = useState('');
+  useEffect(() => {
+    // Store session ID
+    localStorage.setItem('kinetiq_session_id', sessionId);
+  }, [sessionId]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email && dob && last4.length === 4) {
-      onVerify(email, dob, last4);
+  // Update session ID if verification happens (handled by ChatWidget)
+  const handleSessionUpdate = (newCustomerId: string) => {
+    if (newCustomerId && !newCustomerId.startsWith('guest_')) {
+      setSessionId(newCustomerId);
+      localStorage.setItem('kinetiq_session_id', newCustomerId);
     }
   };
 
+  if (isEmbedded) {
+    // Embedded mode - show floating widget
+    return <FloatingChatWidget sessionId={sessionId} onSessionUpdate={handleSessionUpdate} />;
+  }
+
+  // Full page mode
   return (
-    <form onSubmit={handleSubmit} className="verify-form">
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="jane.doe@example.com"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="dob">Date of Birth (YYYY-MM-DD)</label>
-        <input
-          id="dob"
-          type="text"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          required
-          placeholder="1990-06-14"
-          pattern="\d{4}-\d{2}-\d{2}"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="last4">Last 4 digits of Account Number</label>
-        <input
-          id="last4"
-          type="text"
-          value={last4}
-          onChange={(e) => setLast4(e.target.value.replace(/\D/g, '').slice(0, 4))}
-          required
-          placeholder="4567"
-          maxLength={4}
-        />
-      </div>
-      <button type="submit" disabled={isVerifying} className="verify-button">
-        {isVerifying ? 'Verifying...' : 'Verify & Continue'}
-      </button>
-    </form>
+    <div className="app-container">
+      <ChatWidget sessionId={sessionId} onSessionUpdate={handleSessionUpdate} />
+    </div>
   );
 }
 

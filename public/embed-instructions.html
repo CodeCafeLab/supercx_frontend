@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinetiQ Chat Widget - Embedding Instructions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a90e2;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 25px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 4px solid #4a90e2;
+        }
+        .section h2 {
+            color: #4a90e2;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .code-block code {
+            color: #d4d4d4;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #856404;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #4a90e2;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .config-table th,
+        .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .config-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #4a90e2;
+        }
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .optional {
+            color: #27ae60;
+        }
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 KinetiQ Chat Widget</h1>
+        <p class="subtitle">Easy embedding script for any website</p>
+
+        <div class="section">
+            <h2>📋 Quick Start</h2>
+            <p>Copy and paste this code into your website's <code>&lt;head&gt;</code> section:</p>
+            
+            <div class="code-block">
+<pre><code>&lt;!-- KinetiQ Chat Widget Configuration --&gt;
+&lt;script&gt;
+  window.kinetiqChatConfig = {
+    frontendUrl: 'https://bankaichat.codecafelab.in',  // Your frontend URL (required)
+    apiUrl: 'https://bankaichat.codecafelab.in',        // Your backend API URL (update if different)
+    position: 'bottom-left',                            // Widget position: 'bottom-right' or 'bottom-left'
+    buttonColor: '#4a90e2',                             // Button color (hex code)
+    buttonText: 'Chat',                                 // Button text (optional)
+  };
+&lt;/script&gt;
+&lt;script src="https://bankaichat.codecafelab.in/kinetiq-chat-embed.js"&gt;&lt;/script&gt;</code></pre>
+            </div>
+
+            <div class="note">
+                <strong>💡 Note:</strong> The URLs above are already configured with your domain. If your backend API is on a different URL, update the <code>apiUrl</code> value.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Configuration Options</h2>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>frontendUrl</code></td>
+                        <td>string</td>
+                        <td><span class="required">Yes</span></td>
+                        <td>-</td>
+                        <td>The URL where your frontend is hosted (e.g., https://chat.example.com)</td>
+                    </tr>
+                    <tr>
+                        <td><code>apiUrl</code></td>
+                        <td>string</td>
+                        <td><span class="optional">No</span></td>
+                        <td>frontendUrl</td>
+                        <td>The backend API URL. If not provided, defaults to frontendUrl</td>
+                    </tr>
+                    <tr>
+                        <td><code>position</code></td>
+                        <td>string</td>
+                        <td><span class="optional">No</span></td>
+                        <td>'bottom-left'</td>
+                        <td>Widget position: 'bottom-right' or 'bottom-left'</td>
+                    </tr>
+                    <tr>
+                        <td><code>buttonColor</code></td>
+                        <td>string</td>
+                        <td><span class="optional">No</span></td>
+                        <td>'#4a90e2'</td>
+                        <td>Button color in hex format (e.g., '#4a90e2', '#ff5722')</td>
+                    </tr>
+                    <tr>
+                        <td><code>buttonText</code></td>
+                        <td>string</td>
+                        <td><span class="optional">No</span></td>
+                        <td>'Chat'</td>
+                        <td>Text to display on the button (if you want text instead of icon)</td>
+                    </tr>
+                    <tr>
+                        <td><code>zIndex</code></td>
+                        <td>number</td>
+                        <td><span class="optional">No</span></td>
+                        <td>9999</td>
+                        <td>CSS z-index for the widget (to control layering)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📝 Step-by-Step Instructions</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Get your URLs</strong>
+                <p>You need two URLs:</p>
+                <ul style="margin-left: 40px; margin-top: 10px;">
+                    <li><strong>Frontend URL:</strong> Where your chat frontend is hosted (e.g., https://chat.example.com)</li>
+                    <li><strong>Backend URL:</strong> Your API backend URL (e.g., https://api.example.com)</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Add the configuration script</strong>
+                <p>Add this to your website's <code>&lt;head&gt;</code> section, before the closing <code>&lt;/head&gt;</code> tag:</p>
+                <div class="code-block" style="margin-top: 10px;">
+<pre><code>&lt;script&gt;
+  window.kinetiqChatConfig = {
+    frontendUrl: 'https://your-frontend-url.com',
+    apiUrl: 'https://your-backend-url.com',
+  };
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Add the embed script</strong>
+                <p>Right after the configuration, add the embed script:</p>
+                <div class="code-block" style="margin-top: 10px;">
+<pre><code>&lt;script src="https://your-frontend-url.com/kinetiq-chat-embed.js"&gt;&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Test it!</strong>
+                <p>Open your website and you should see a chat button in the bottom-left corner. Click it to open the chat widget.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💻 Complete Example</h2>
+            <p>Here's a complete HTML example:</p>
+            <div class="code-block">
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My Website&lt;/title&gt;
+    
+    &lt;!-- KinetiQ Chat Widget --&gt;
+    &lt;script&gt;
+      window.kinetiqChatConfig = {
+        frontendUrl: 'https://bankaichat.codecafelab.in',
+        apiUrl: 'https://bankaichat.codecafelab.in',  // Update if your backend is on a different URL
+        position: 'bottom-left',
+        buttonColor: '#4a90e2',
+      };
+    &lt;/script&gt;
+    &lt;script src="https://bankaichat.codecafelab.in/kinetiq-chat-embed.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+    &lt;!-- Your website content here --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎮 JavaScript API</h2>
+            <p>You can control the chat widget programmatically:</p>
+            <div class="code-block">
+<pre><code>// Open the chat widget
+window.KinetiQChat.open();
+
+// Close the chat widget
+window.KinetiQChat.close();
+
+// Toggle the chat widget
+window.KinetiQChat.toggle();
+
+// Get current configuration
+console.log(window.KinetiQChat.config);</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Customization Examples</h2>
+            
+            <h3 style="margin-top: 20px; color: #4a90e2;">Change Button Position</h3>
+            <div class="code-block">
+<pre><code>window.kinetiqChatConfig = {
+  frontendUrl: 'https://chat.example.com',
+  position: 'bottom-left',  // Change to bottom-left
+};</code></pre>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #4a90e2;">Change Button Color</h3>
+            <div class="code-block">
+<pre><code>window.kinetiqChatConfig = {
+  frontendUrl: 'https://chat.example.com',
+  buttonColor: '#ff5722',  // Orange color
+};</code></pre>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #4a90e2;">Custom Z-Index</h3>
+            <div class="code-block">
+<pre><code>window.kinetiqChatConfig = {
+  frontendUrl: 'https://chat.example.com',
+  zIndex: 10000,  // Higher z-index to appear above other elements
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Make sure your frontend URL is accessible and CORS is properly configured</li>
+                <li>The frontend must be served with the <code>?embedded=true</code> parameter support</li>
+                <li>For production, use HTTPS URLs</li>
+                <li>Test the widget on different devices and browsers</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🐛 Troubleshooting</h2>
+            <p><strong>Widget not appearing?</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Check browser console for errors</li>
+                <li>Verify the script URL is correct and accessible</li>
+                <li>Make sure the frontendUrl is correct</li>
+                <li>Check if there are any JavaScript errors on your page</li>
+            </ul>
+
+            <p style="margin-top: 15px;"><strong>Chat not loading?</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Verify the frontend is running and accessible</li>
+                <li>Check CORS settings on your backend</li>
+                <li>Verify the apiUrl is correct</li>
+                <li>Check browser network tab for failed requests</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📞 Support</h2>
+            <p>If you need help, please check:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Browser console for error messages</li>
+                <li>Network tab for failed API requests</li>
+                <li>Make sure all URLs are correct and accessible</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

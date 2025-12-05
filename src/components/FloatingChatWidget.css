@@ -1,3 +1,102 @@
+/* Popup Bubble Style */
+.kinetiq-popup-bubble {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 320px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 9998;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: kinetiq-popup-slide-up 0.3s ease-out;
+}
+
+@keyframes kinetiq-popup-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kinetiq-popup-bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.kinetiq-popup-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kinetiq-popup-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.kinetiq-popup-text {
+  flex: 1;
+}
+
+.kinetiq-popup-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.kinetiq-popup-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.kinetiq-popup-button {
+  width: 100%;
+  background: #000000;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.kinetiq-popup-button:hover {
+  background: #1f2937;
+  transform: scale(1.02);
+}
+
+.kinetiq-popup-button:active {
+  transform: scale(0.98);
+}
+
+.kinetiq-popup-button svg {
+  flex-shrink: 0;
+}
+
+.kinetiq-popup-button span {
+  flex: 1;
+  text-align: center;
+}
+
+/* Legacy button style (kept for compatibility) */
 .kinetiq-chat-button {
   position: fixed;
   bottom: 20px;
@@ -24,7 +123,7 @@
 .kinetiq-chat-container {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   width: 380px;
   height: 600px;
   max-height: calc(100vh - 40px);
@@ -35,6 +134,18 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: kinetiq-chat-slide-up 0.3s ease-out;
+}
+
+@keyframes kinetiq-chat-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .kinetiq-chat-header-bar {
@@ -76,6 +187,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  background: #f9fafb;
 }
 
 .kinetiq-chat-content .chat-widget {
@@ -83,15 +196,24 @@
   max-height: 100%;
   border-radius: 0;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 @media (max-width: 480px) {
+  .kinetiq-popup-bubble {
+    width: calc(100vw - 40px);
+    left: 20px;
+    right: 20px;
+  }
+
   .kinetiq-chat-container {
     width: calc(100vw - 20px);
     height: calc(100vh - 20px);
     bottom: 10px;
-    right: 10px;
     left: 10px;
+    right: 10px;
   }
 }
 
